@@ -1,0 +1,115 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  height: 100vh;
+}
+
+/* Header fixo no topo */
+.cabecalho-pagina {
+  background-color: #00475d;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.informacoes-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  width: 45px;
+}
+
+.titulo {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #005;
+}
+
+/* Painel centralizado */
+.painel {
+  background-color: #e4e4e4;
+  padding: 70px;
+  border-radius: 8px;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.titulo-painel {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+/* Botões */
+.botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.botoes button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #6eb9bc;
+  color: white;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.botoes button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  
+    .cabecalho-pagina {
+    padding: 15px 20px;
+  }
+
+  .informacoes-cabecalho{
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .titulo {
+    font-size: 24px;
+  }
+
+  .logo {
+    width: 35px;
+  }
+
+  .painel {
+    padding: 40px 20px;
+  }
+
+  .titulo-painel {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .botoes button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
