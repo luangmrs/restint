@@ -75,3 +75,34 @@ body {
     height: auto;
     display: block;
 }
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .logo img,
+    .logo .Logo {
+        max-width: 150px;
+    }
+
+    .login-container h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .login-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem;
+    }
+
+    .form-group input {
+        padding: 0.45rem;
+    }
+
+    .logo {
+        margin-top: -6rem;
+        margin-bottom: 1rem;
+    }
+}
