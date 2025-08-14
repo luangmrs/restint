@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import useLogin from "../../hooks/useLogin.jsx";
 import PasswordReset from "./PasswordReset.jsx";
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mostrarReset, setMostrarReset] = useState(false);
 
   const { login, user, loading, errorMessage, showCredentialsError } =
     useLogin();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(email, password);
+  };
 
   if (mostrarReset) {
     return <PasswordReset onBack={() => setMostrarReset(false)} />;
@@ -52,10 +57,5 @@ const LoginForm = ({ onLogin }) => {
     </form>
   );
 };
-
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    login(email, password);
-  }
 
 export default LoginForm;

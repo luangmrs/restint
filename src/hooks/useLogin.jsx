@@ -31,6 +31,12 @@ export default function useLogin() {
     }
   }, [showCredentialsError]);
 
+  useEffect(() => {
+    if (user) {
+      console.log("Usuário autenticado:", user);
+    }
+  }, [user]);
+
   return {
     login,
     user,
