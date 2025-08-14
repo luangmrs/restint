@@ -26,6 +26,7 @@ body {
   justify-content: center;
   /* background: black; */
   width: 65%;
+  margin-top: -6rem;
 }
 
 .loginForm {
@@ -54,7 +55,7 @@ body {
 }
 
 .loginForm input {
-  width: 93%;
+  width: 100%;
   padding: 10px 12px;
   margin-bottom: 18px;
   border: 1px solid #ccc;
