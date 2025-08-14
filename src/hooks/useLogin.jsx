@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { auth } from "../services/firebaseConfig.js";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-export function useLogin() {
+export default function useLogin() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
 
