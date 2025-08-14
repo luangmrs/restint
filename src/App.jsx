@@ -1,11 +1,7 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./components/LoginPage/LoginPage.jsx";
+import AppRoutes from "./routes/AppRoutes.jsx";
 
 function App() {
-  return (
-    <LoginPage />
-  );
+  return <AppRoutes />;
 }
 
 export default App;
