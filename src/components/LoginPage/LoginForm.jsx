@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin.jsx";
 import PasswordReset from "./PasswordReset.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [mostrarReset, setMostrarReset] = useState(false);
 
-  const { login, errorMessage, showCredentialsError } =
+  const { login, user, loading, errorMessage, showCredentialsError } =
     useLogin();
 
   const handleSubmit = async (e) => {
