@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 export const AuthConst = createContext({});
 
 export default function useLogin() {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { setCurrentUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
 
