@@ -9,32 +9,37 @@ export default function useLogin() {
   const { currentUser, setCurrentUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
-  const [userData, setUserData] = useState(null);
 
   const [signInWithEmailAndPassword, user, loading, errorSignIn] =
     useSignInWithEmailAndPassword(auth);
 
   const login = async (email, password) => {
+    setErrorMessage("");
+    setShowCredentialsError(false);
     if (!email || !password) {
       setErrorMessage("Preencha todos os campos.");
-      return;
+      return false;
     }
-    setErrorMessage("");
-    await signInWithEmailAndPassword(email, password);
+    try {
+      const userCredential = await signInWithEmailAndPassword(email, password);
+      if (userCredential) {
+        setCurrentUser(userCredential.user);
+        return true;
+      }
+    } catch (error) {
+      console.error("Erro de login:", error);
+    }
+
+    return false;
   };
 
   useEffect(() => {
     if (errorSignIn) {
       setShowCredentialsError(true);
-    }
-  }, [errorSignIn]);
-
-  useEffect(() => {
-    if (showCredentialsError) {
       const timer = setTimeout(() => setShowCredentialsError(false), 3000);
       return () => clearTimeout(timer);
     }
-  }, [showCredentialsError]);
+  }, [errorSignIn]);
 
   useEffect(() => {
     if (user) {
