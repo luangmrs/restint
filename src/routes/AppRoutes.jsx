@@ -1,5 +1,6 @@
 import React from 'react'
 import LoginPage from '../components/LoginPage/LoginPage.jsx';
+import Home from '../components/Feed/Home.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router'
 
 const AppRoutes = () => {
@@ -7,6 +8,7 @@ const AppRoutes = () => {
    <BrowserRouter>
    <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<Home />} />
    </Routes>
    </BrowserRouter>
   )

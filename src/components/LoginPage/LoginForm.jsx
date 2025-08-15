@@ -7,7 +7,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [mostrarReset, setMostrarReset] = useState(false);
 
-  const { login, user, loading, errorMessage, showCredentialsError } =
+  const { login, errorMessage, showCredentialsError } =
     useLogin();
 
   const handleSubmit = async (e) => {

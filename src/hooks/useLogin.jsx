@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { auth } from "../services/firebaseConfig.js";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+
+export const AuthConst = createContext({});
 
 export default function useLogin() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const [signInWithEmailAndPassword, user, loading, errorSignIn] =
     useSignInWithEmailAndPassword(auth);
