@@ -20,14 +20,40 @@ export default function PasswordResetForm({ onBack }) {
           required
         />
       </div>
-      <button type="submit">Redefinir</button>
+      <button
+        type="submit"
+        className="w-full 
+                    p-3 
+                    bg-gradient-to-r from-[#068ba1] to-[#77bfbc] 
+                    text-white 
+                    border-none 
+                    rounded-md 
+                    text-[1.1rem] 
+                    font-bold 
+                    cursor-pointer 
+                    transition-colors 
+                    duration-200"
+      >
+        Redefinir
+      </button>
       <button
         type="button"
         onClick={onBack}
         style={{
           marginTop: "15px",
-          background: "linear-gradient(to right, #6E0C0C, #dd1818)",
         }}
+        className="w-full 
+                    p-3 
+                    bg-gradient-to-br from-zinc-800 to-red-900
+                    hover:from-zinc-700 hover:to-red-700
+                    text-white 
+                    border-none 
+                    rounded-md 
+                    text-[1.1rem] 
+                    font-bold 
+                    cursor-pointer 
+                    transition-colors 
+                    duration-200"
       >
         Voltar
       </button>
