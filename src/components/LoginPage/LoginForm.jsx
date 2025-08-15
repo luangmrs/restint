@@ -1,28 +1,27 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin.jsx";
 import PasswordReset from "./PasswordReset.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
+import Home from "../FeedPage/Home.jsx";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [mostrarReset, setMostrarReset] = useState(false);
+  
+  const navigate = useNavigate();
 
   const { login, user, loading, errorMessage, showCredentialsError } =
     useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
-  };
-
-  React.useEffect(() => {
-    if (user) {
-      setIsLoggingIn(true);
+    const loginHappens = await login(email, password);
+    if (loginHappens) {
+      navigate("/home", { replace: true });
     }
-  }, [user]);
+  };
 
   if (mostrarReset) {
     return <PasswordReset onBack={() => setMostrarReset(false)} />;
@@ -30,7 +29,6 @@ const LoginForm = () => {
 
   return (
     <div>
-      {isLoggingIn && <Navigate to={"/home"} replace={true} />}
       <form onSubmit={handleSubmit}>
         <h2>LOGIN</h2>
         {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
