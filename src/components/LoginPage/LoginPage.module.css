@@ -67,7 +67,7 @@ body {
   outline: none;
   box-shadow: 0 0 5px rgba(6, 139, 161, 0.5);
 }
-.loginForm button {
+/* .loginForm button {
   width: 100%;
   padding: 12px;
   background: linear-gradient(90deg, #068ba1 0%, #77bfbc 100%);
@@ -78,7 +78,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
-}
+} */
 
 .loginForm button:hover {
   background: linear-gradient(90deg, #05445b 0%, #4b7d85 100%);
