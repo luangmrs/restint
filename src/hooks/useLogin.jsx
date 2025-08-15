@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { auth } from "../services/firebaseConfig.js";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 export default function useLogin() {
+  const { currentUser, setCurrentUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
 
@@ -34,15 +36,15 @@ export default function useLogin() {
   useEffect(() => {
     if (user) {
       console.log("Usuário autenticado:", user);
+      setCurrentUser(user);
     }
-  }, [user]);
+  }, [setCurrentUser, user]);
 
   return {
     login,
     user,
     loading,
     errorMessage,
-    setErrorMessage,
     showCredentialsError,
   };
 }
