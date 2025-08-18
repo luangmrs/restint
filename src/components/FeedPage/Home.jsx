@@ -3,12 +3,9 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useLogout } from "../../hooks/useLogout.jsx";
 
 const Home = () => {
-  const { currentUser, loading } = useAuth();
+  const { currentUser } = useAuth();
   const logout = useLogout();
-
-  if (loading || !currentUser) {
-    return <div>Loading...</div>;
-  }
+  
   return (
     <div>
       <h1>Seja bem-vindo: {currentUser.email}</h1>

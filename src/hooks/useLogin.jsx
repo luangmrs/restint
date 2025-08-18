@@ -1,12 +1,9 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { auth } from "../services/firebaseConfig.js";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useAuth } from "../contexts/AuthContext.jsx";
 
-export const AuthConst = createContext({});
 
 export default function useLogin() {
-  const { setCurrentUser } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
   const [showCredentialsError, setShowCredentialsError] = useState(false);
 
@@ -16,21 +13,20 @@ export default function useLogin() {
   const login = async (email, password) => {
     setErrorMessage("");
     setShowCredentialsError(false);
+
     if (!email || !password) {
       setErrorMessage("Preencha todos os campos.");
       return false;
     }
+
     try {
       const userCredential = await signInWithEmailAndPassword(email, password);
-      if (userCredential) {
-        setCurrentUser(userCredential.user);
-        return true;
-      }
+      console.log(userCredential);
+      return !!userCredential; 
     } catch (error) {
       console.error("Erro de login:", error);
+      return false;
     }
-
-    return false;
   };
 
   useEffect(() => {
@@ -40,13 +36,6 @@ export default function useLogin() {
       return () => clearTimeout(timer);
     }
   }, [errorSignIn]);
-
-  useEffect(() => {
-    if (user) {
-      console.log("Usuário autenticado:", user);
-      setCurrentUser(user);
-    }
-  }, [setCurrentUser, user]);
 
   return {
     login,
