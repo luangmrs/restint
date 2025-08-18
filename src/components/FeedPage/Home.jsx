@@ -2,14 +2,26 @@ import React from "react";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import { useLogout } from "../../hooks/useLogout.jsx";
 
+import Header from "../Header.jsx";
+
 const Home = () => {
   const { currentUser } = useAuth();
-  const logout = useLogout();
+  
   
   return (
-    <div>
-      <h1>Seja bem-vindo: {currentUser.email}</h1>
-      <button onClick={logout} className="border-2 w-full bg-amber-900 hover:bg-amber-200">SAIR</button>
+    <div className="min-h-screen bg-gray-200"> 
+      <Header />
+       <main className="container mx-auto  mt-4 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-6"> 
+        <div className="border-4  hidden md:block md:col-span-2">
+          <h1 className=" text-2xl font-bold mb-4">Bem-vindo, {currentUser.email}</h1>
+        </div>
+        <div className=" border-4  md:col-span-3 lg:col-span-3">
+          <h1 >Feed</h1>
+        </div>
+        <div className=" border-4  hidden lg:block lg:col-span-2">
+          <h1>userList</h1>
+        </div>
+      </main>
     </div>
   );
 };

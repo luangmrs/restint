@@ -44,16 +44,14 @@ export default function PasswordResetForm({ onBack }) {
         }}
         className="w-full 
                     p-3 
-                    bg-gradient-to-br from-zinc-800 to-red-900
-                    hover:from-zinc-700 hover:to-red-700
+                    bg-red-600 hover:bg-red-700
                     text-white 
                     border-none 
                     rounded-md 
                     text-[1.1rem] 
                     font-bold 
                     cursor-pointer 
-                    transition-colors 
-                    duration-200"
+                    "       
       >
         Voltar
       </button>
