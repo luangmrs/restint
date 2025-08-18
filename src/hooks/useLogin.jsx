@@ -22,7 +22,7 @@ export default function useLogin() {
     try {
       const userCredential = await signInWithEmailAndPassword(email, password);
       console.log(userCredential);
-      return !!userCredential; 
+      return !!userCredential, userCredential.user; 
     } catch (error) {
       console.error("Erro de login:", error);
       return false;

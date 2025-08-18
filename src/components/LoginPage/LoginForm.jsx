@@ -5,6 +5,8 @@ import PasswordReset from "./PasswordReset.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import Home from "../FeedPage/Home.jsx";
 
+import { checkUser } from "../../services/firestorage.js";
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +19,9 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loginHappens = await login(email, password);
-    if (loginHappens) {
+    const user = await login(email, password);
+    if (user) {
+      await checkUser(user);
       navigate("/home", { replace: true });
     }
   };
