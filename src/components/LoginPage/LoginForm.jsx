@@ -5,7 +5,7 @@ import PasswordReset from "./PasswordReset.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
 import Home from "../FeedPage/Home.jsx";
 
-import { checkUser } from "../../services/firestorage.js";
+import { checkUser } from "../../services/firestore.js";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
