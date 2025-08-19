@@ -1,0 +1,81 @@
+import React from "react";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Heart, MessageSquare } from "lucide-react";
+
+const Post = ({ post }) => {
+  const postDate = post.createdAt?.toDate();
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-5 transition-shadow duration-300 hover:shadow-lg">
+      {/* Container principal com padding */}
+      <div className="p-4">
+        <div className="flex items-start">
+          {/* Foto do Perfil (agora com um leve anel) */}
+          <div className="flex-shrink-0 mr-4">
+            <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#72bbbc] shadow-md">
+              {post.authorProfilePic ? (
+                <img
+                  src={post.authorProfilePic}
+                  alt="Foto de Perfil"
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="bg-gray-200 w-full h-full flex items-center justify-center text-gray-400 text-xl font-bold">
+                  {post.authorDisplayName[0].toUpperCase()}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex-1">
+            {/* Informações do Autor com melhor hierarquia e cursor de link */}
+            <div className="flex items-baseline space-x-2 cursor-pointer group">
+              <p className="font-bold text-gray-900 group-hover:underline">
+                {post.authorDisplayName}
+              </p>
+              <p className="text-sm text-gray-500">@{post.authorUsername}</p>
+            </div>
+            
+            {/* Data do post, agora em uma linha separada para mais clareza */}
+            <p className="text-xs text-gray-400 mt-1">
+              {postDate
+                ? formatDistanceToNow(postDate, {
+                    addSuffix: true,
+                    locale: ptBR,
+                  })
+                : "agora"}
+            </p>
+
+            {/* Conteúdo do Post com melhor legibilidade */}
+            <p className="mt-3 text-gray-800 text-base leading-relaxed whitespace-pre-wrap">
+              {post.content}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Botões de Ação com design aprimorado e contadores */}
+      <div className="flex justify-around items-center px-4 py-2 border-t border-gray-200 mt-2">
+        {/* Botão Curtir */}
+        <button className="flex items-center space-x-2 text-gray-500 hover:text-red-500 group transition-colors duration-200">
+          <div className="p-2 rounded-full group-hover:bg-red-100 hover:cursor-pointer">
+            <Heart size={20} />
+          </div>
+          {/* Exemplo de como você adicionaria o contador de curtidas */}
+          <span className="text-sm font-semibold">{post.likes?.length || 0}</span>
+        </button>
+
+        {/* Botão Comentar */}
+        <button className="flex items-center space-x-2 text-gray-500 hover:text-cyan-500 group transition-colors duration-200">
+          <div className="p-2 rounded-full group-hover:bg-cyan-100 hover:cursor-pointer">
+            <MessageSquare size={20} />
+          </div>
+          <span className="text-sm font-semibold">{post.commentsCount || 0}</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Post;
