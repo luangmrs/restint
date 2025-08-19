@@ -1,16 +1,18 @@
 import { db } from "./firebaseConfig.js";
 import {
-  collection,
-  doc,
-  addDoc,
-  getDoc,
-  setDoc,
-  getDocs,
-  query,
-  orderBy,
-  limit,
-  startAfter,
-  serverTimestamp,
+    collection,
+    doc,
+    addDoc,
+    getDoc,
+    setDoc,
+    getDocs,
+    updateDoc,
+    deleteDoc,
+    query,
+    orderBy,
+    limit,
+    startAfter,
+    serverTimestamp,
 } from "firebase/firestore";
 
 const POSTS_PER_PAGE = 5;
@@ -102,4 +104,28 @@ export async function createPost(postData) {
     console.error("Erro ao criar post:", error);
     throw error;
   }
+}
+
+// Atualizar post
+export async function updatePost(postId, newData) {
+    try {
+        const postRef = doc(db, "posts", postId);
+        await updateDoc(postRef, newData);
+        console.log("Post atualizado com sucesso!");
+    } catch (error) {
+        console.error("Erro ao atualizar post:", error);
+        throw error;
+    }
+}
+
+// Deletar post
+export async function deletePost(postId) {
+    try {
+        const postRef = doc(db, "posts", postId);
+        await deleteDoc(postRef);
+        console.log("Post deletado com sucesso!");
+    } catch (error) {
+        console.error("Erro ao deletar post:", error);
+        throw error;
+    }
 }
