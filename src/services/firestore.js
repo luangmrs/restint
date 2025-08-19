@@ -2,11 +2,18 @@ import { db } from "./firebaseConfig.js";
 import {
   collection,
   doc,
+  addDoc,
   getDoc,
   setDoc,
-  query,
   getDocs,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  serverTimestamp,
 } from "firebase/firestore";
+
+const POSTS_PER_PAGE = 5;
 
 export async function checkUser(user) {
   try {
@@ -46,5 +53,53 @@ export async function getUsers() {
   } catch (error) {
     console.error("Erro ao buscar a lista de usuários:", error);
     return [];
+  }
+}
+
+export async function getPosts(lastVisibleDoc = null) {
+  try {
+    const postsCollectionRef = collection(db, "posts");
+    let q = query(
+      postsCollectionRef,
+      orderBy("createdAt", "desc"),
+      limit(POSTS_PER_PAGE)
+    );
+
+    if (lastVisibleDoc) {
+      q = query(
+        postsCollectionRef,
+        orderBy("createdAt", "desc"),
+        startAfter(lastVisibleDoc),
+        limit(POSTS_PER_PAGE)
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { posts, lastDoc };
+  } catch (error) {
+    console.error("Erro ao buscar os posts:", error);
+    throw new Error("Não foi possível carregar o feed.");
+  }
+}
+
+export async function createPost(postData) {
+  try {
+    const postsCollectionRef = collection(db, "posts");
+    const docRef = await addDoc(postsCollectionRef, {
+      ...postData,
+      createdAt: serverTimestamp(),
+    });
+    return docRef;
+  } catch (error) {
+    console.error("Erro ao criar post:", error);
+    throw error;
   }
 }
