@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin.jsx";
 import PasswordReset from "./PasswordReset.jsx";
 import LoadingSpinner from "../LoadingSpinner.jsx";
-import Home from "../FeedPage/Home.jsx";
+import { sendMagicLink } from "../../services/authService.js";
 
 import { checkUser } from "../../services/firestore.js";
 
@@ -11,6 +11,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mostrarReset, setMostrarReset] = useState(false);
+  const [loadingMagic, setLoadingMagic] = useState(false);
   
   const navigate = useNavigate();
 
@@ -25,6 +26,19 @@ const LoginForm = () => {
       navigate("/home", { replace: true });
     }
   };
+
+    const handleMagicLink = async () => {
+        try {
+            setLoadingMagic(true);
+            await sendMagicLink(email);
+            alert("Link mágico enviado para seu email!");
+        } catch (err) {
+            console.error(err);
+            alert("Erro ao enviar link mágico.");
+        } finally {
+            setLoadingMagic(false);
+        }
+    };
 
   if (mostrarReset) {
     return <PasswordReset onBack={() => setMostrarReset(false)} />;
