@@ -72,6 +72,15 @@ const UsersList = () => {
                 </p>
                 <p className="text-sm text-gray-500">@{user.username}</p>
               </div>
+              {user.badges && user.badges.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {user.badges.map((badge, index) => (
+                    <span key={index} className="bg-cyan-100 text-cyan-800 text-xs font-semibold px-2 py-0.5 rounded-full">
+                      {badge}
+                    </span>
+                  ))}
+                </div>
+              )}
             </li>
           ))
         ) : (

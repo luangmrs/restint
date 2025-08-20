@@ -5,6 +5,7 @@ import {
   addDoc,
   getDoc,
   setDoc,
+  updateDoc,
   getDocs,
   query,
   orderBy,
@@ -27,6 +28,7 @@ export async function checkUser(user) {
         createdAt: new Date(),
         bio: "",
         profilePicture: "",
+        bannerPicture,
         badges: [],
         posts: [],
       });
@@ -103,3 +105,17 @@ export async function createPost(postData) {
     throw error;
   }
 }
+
+export const updateUserProfile = async (userId, dataToUpdate) => {
+  if (!userId) {
+    throw new Error("ID do usuário não fornecido para atualização.");
+  }
+  try {
+    const db = getFirestore();
+    const userDocRef = doc(db, "users", userId); // Pega a referência do documento do usuário
+    await updateDoc(userDocRef, dataToUpdate); // Atualiza o documento
+  } catch (error) {
+    console.error("Erro ao atualizar o perfil:", error);
+    throw new Error("Não foi possível atualizar o perfil do usuário.");
+  }
+};
