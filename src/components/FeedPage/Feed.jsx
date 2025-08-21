@@ -1,9 +1,9 @@
 // src/components/home/Feed.jsx
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { getPosts } from '../../services/firestore.js';
-import Post from './Post.jsx';
-import LoadingSpinner from '../LoadingSpinner.jsx';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { getPosts } from "../../services/firestore.js";
+import Post from "./Post.jsx";
+import LoadingSpinner from "../LoadingSpinner.jsx";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -30,13 +30,13 @@ const Feed = () => {
   // Função para buscar mais posts
   const fetchMorePosts = useCallback(async () => {
     if (!lastDoc) {
-        setHasMore(false);
-        return;
+      setHasMore(false);
+      return;
     }
     setLoadingMore(true);
     try {
       const { posts: newPosts, lastDoc: newLastDoc } = await getPosts(lastDoc);
-      setPosts(prevPosts => [...prevPosts, ...newPosts]); // Adiciona os novos posts aos antigos
+      setPosts((prevPosts) => [...prevPosts, ...newPosts]); // Adiciona os novos posts aos antigos
       setLastDoc(newLastDoc);
       if (!newLastDoc) setHasMore(false);
     } catch (e) {
@@ -46,6 +46,12 @@ const Feed = () => {
     }
   }, [lastDoc]);
 
+  const handlePostUpdate = (updatedPost) => {
+    setPosts((currentPosts) =>
+      currentPosts.map((p) => (p.id === updatedPost.id ? updatedPost : p))
+    );
+  };
+
   // Efeito para a busca inicial
   useEffect(() => {
     fetchInitialPosts();
@@ -53,26 +59,37 @@ const Feed = () => {
 
   // Lógica do Intersection Observer
   const observer = useRef();
-  const lastPostElementRef = useCallback(node => {
-    if (loading || loadingMore) return; // Não faz nada se já estiver carregando
-    if (observer.current) observer.current.disconnect(); // Desconecta o observer antigo
-    
-    observer.current = new IntersectionObserver(entries => {
-      // Se o último elemento estiver visível e houver mais posts, busca a próxima página
-      if (entries[0].isIntersecting && hasMore) {
-        fetchMorePosts();
-      }
-    });
+  const lastPostElementRef = useCallback(
+    (node) => {
+      if (loading || loadingMore) return; // Não faz nada se já estiver carregando
+      if (observer.current) observer.current.disconnect(); // Desconecta o observer antigo
 
-    if (node) observer.current.observe(node); // Observa o novo último elemento
-  }, [loading, loadingMore, hasMore, fetchMorePosts]);
+      observer.current = new IntersectionObserver((entries) => {
+        // Se o último elemento estiver visível e houver mais posts, busca a próxima página
+        if (entries[0].isIntersecting && hasMore) {
+          fetchMorePosts();
+        }
+      });
+
+      if (node) observer.current.observe(node); // Observa o novo último elemento
+    },
+    [loading, loadingMore, hasMore, fetchMorePosts]
+  );
 
   if (loading) {
-    return <div className="mt-8 flex justify-center"><LoadingSpinner size={8} /></div>;
+    return (
+      <div className="mt-8 flex justify-center">
+        <LoadingSpinner size={8} />
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="bg-white p-4 rounded-lg shadow-md text-red-600">{error}</div>;
+    return (
+      <div className="bg-white p-4 rounded-lg shadow-md text-red-600">
+        {error}
+      </div>
+    );
   }
 
   return (
@@ -86,12 +103,16 @@ const Feed = () => {
             </div>
           );
         } else {
-          return <Post key={post.id} post={post} />;
+          return <Post key={post.id} post={post} onPostUpdate={handlePostUpdate} />;
         }
       })}
 
       {/* Indicador de "carregando mais" */}
-      {loadingMore && <div className="my-4 flex justify-center"><LoadingSpinner size={6} /></div>}
+      {loadingMore && (
+        <div className="my-4 flex justify-center">
+          <LoadingSpinner size={6} />
+        </div>
+      )}
 
       {/* Mensagem de fim de feed */}
       {!loading && !hasMore && (
