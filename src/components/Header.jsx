@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext"; // Para pegar os dados do usu
 import { useUserData } from "../hooks/useUserData"; // Para pegar a foto
 import { Bell, Search, User, LogOut } from "lucide-react";
 import logo from "../assets/logo-pura.png";
+import { Link } from "react-router-dom"; // Para links de navegação
 
 const Header = () => {
   const logout = useLogout();
@@ -74,9 +75,9 @@ const Header = () => {
             {/* Dropdown do Menu */}
             {isMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-50">
-                <a href="/profile" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <Link to={`/profile/${currentUser.uid}`} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   <User size={16} /> Meu Perfil
-                </a>
+                </Link>
                 <button onClick={logout} className="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                   <LogOut size={16} /> Sair
                 </button>

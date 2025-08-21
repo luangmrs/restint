@@ -12,6 +12,7 @@ import {
   limit,
   startAfter,
   increment,
+  where,
   serverTimestamp,
   arrayRemove,
   arrayUnion,
@@ -94,6 +95,26 @@ export async function getPosts(lastVisibleDoc = null) {
     throw new Error("Não foi possível carregar o feed.");
   }
 }
+
+export const getPostsByUser = async (userId) => {
+  if (!userId) return [];
+  try {
+    const postsCollection = collection(db, "posts");
+    
+    // A query agora filtra onde 'authorId' é igual ao userId fornecido
+    const q = query(
+      postsCollection, 
+      where("authorId", "==", userId),
+      orderBy("createdAt", "desc")
+    );
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Erro ao buscar os posts do usuário:", error);
+    throw new Error("Não foi possível carregar os posts.");
+  }
+};
 
 export async function createPost(postData) {
   try {

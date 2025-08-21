@@ -2,11 +2,11 @@ import React from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useUserData } from "../../hooks/useUserData";
 import LoadingSpinner from "../LoadingSpinner";
-import { Pencil } from "lucide-react"; // Ícone para o botão de editar
 
-const Profile = () => {
+const Profile = ({ targetUserId}) => {
   const { currentUser } = useAuth();
-  const { profileData, loading, error } = useUserData(currentUser?.uid);
+  const userIdToFetch = targetUserId || currentUser.uid;
+  const { profileData, loading, error } = useUserData(userIdToFetch);
 
   // O tratamento de 'loading' e 'error' continua excelente, não precisa mudar.
   if (loading) {
