@@ -11,7 +11,10 @@ import {
   orderBy,
   limit,
   startAfter,
+  increment,
   serverTimestamp,
+  arrayRemove,
+  arrayUnion,
 } from "firebase/firestore";
 
 const POSTS_PER_PAGE = 5;
@@ -118,4 +121,41 @@ export const updateUserProfile = async (userId, dataToUpdate) => {
     console.error("Erro ao atualizar o perfil:", error);
     throw new Error("Não foi possível atualizar o perfil do usuário.");
   }
+};
+
+export const toggleLikePost = async (postId, userId, isLiked) => {
+  if (!postId || !userId) {
+    throw new Error("ID do post ou do usuário não fornecido.");
+  }
+  try {
+    const postDocRef = doc(db, "posts", postId);
+
+    const updateData = {
+      likes: isLiked ? arrayRemove(userId) : arrayUnion(userId),
+    };
+
+    await updateDoc(postDocRef, updateData);
+  } catch (error) {
+    console.error("Erro ao curtir o post:", error);
+    throw new Error("Não foi possível atualizar o like.");
+  }
+};
+
+export const getCommentsForPost = async (postId) => {
+  const commentsRef = collection(db, "posts", postId, "comments");
+  const q = query(commentsRef, orderBy("createdAt", "asc"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+};
+
+export const addCommentToPost = async (postId, commentData) => {
+  // Adiciona o comentário na subcoleção
+  const commentsRef = collection(db, "posts", postId, "comments");
+  await addDoc(commentsRef, { ...commentData, createdAt: serverTimestamp() });
+
+  // Atualiza a contagem de comentários no documento do post principal
+  const postDocRef = doc(db, "posts", postId);
+  await updateDoc(postDocRef, {
+    commentsCount: increment(1),
+  });
 };
