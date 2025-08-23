@@ -57,7 +57,7 @@ const Profile = ({ targetUserId, onProfileUpdate }) => {
             {isOwnProfile && (
               <button
                 onClick={() => setIsEditModalOpen(true)}
-                className="px-4 py-2 mt-4  rounded-full border-1 border-gray-400 shadow-sm text-sm font-semibold bg-[#018ca1] text-[#f8f1de] hover:bg-gray-100 hover:text-gray-800 transition-colors flex items-center gap-2"
+                className="px-4 py-2 mt-4  rounded-full shadow-sm text-sm font-semibold bg-[#018ca1] text-[#f8f1de] hover:bg-gray-100 hover:text-gray-800 transition-colors flex items-center gap-2"
               >
                 <Pencil size={14} /> Editar Perfil
               </button>
