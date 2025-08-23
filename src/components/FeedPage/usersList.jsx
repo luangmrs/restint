@@ -41,7 +41,7 @@ const UsersList = () => {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
-      <div className=" border-b-2 border-[#72bbbc] pb-0  w-full">
+      <div className=" border-b border-gray-300 pb-0  w-full">
         <h2 className="text-xl font-bold mb-2">Comunidade</h2>
       </div>
       <ul>
@@ -79,7 +79,7 @@ const UsersList = () => {
                     {user.badges.map((badge, index) => (
                       <span
                         key={index}
-                        className="bg-cyan-100 text-cyan-800 text-xs font-semibold px-2 py-0.5 rounded-full"
+                        className="bg-[#018ca1] text-[#f8f1de]  text-xs font-semibold px-2 py-0.5 rounded-full"
                       >
                         {badge}
                       </span>

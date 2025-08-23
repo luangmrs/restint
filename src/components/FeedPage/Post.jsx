@@ -5,7 +5,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Heart, MessageSquare } from "lucide-react";
 
-import CommentsModal from "./CommentsModal.jsx";
+import CommentsModal from "../Modals/CommentsModal.jsx";
 
 const Post = ({ post, onPostUpdate }) => {
   const postDate = post.createdAt?.toDate();

@@ -135,7 +135,6 @@ export const updateUserProfile = async (userId, dataToUpdate) => {
     throw new Error("ID do usuário não fornecido para atualização.");
   }
   try {
-    const db = getFirestore();
     const userDocRef = doc(db, "users", userId); // Pega a referência do documento do usuário
     await updateDoc(userDocRef, dataToUpdate); // Atualiza o documento
   } catch (error) {
