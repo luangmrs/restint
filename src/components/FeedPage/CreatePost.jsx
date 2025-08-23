@@ -36,7 +36,7 @@ const CreatePost = ({ onPostCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!content.trim() || !profileData) {
+    if (!content.trim() && !imageFile) {
       setError("O post não pode estar vazio.");
       return;
     }
@@ -50,6 +50,7 @@ const CreatePost = ({ onPostCreated }) => {
     setError("");
 
     let imageUrl = null;
+    let imagePath = null;
 
     try {
       if (imageFile) {
@@ -57,6 +58,7 @@ const CreatePost = ({ onPostCreated }) => {
         const filePath = `post_images/${currentUser.uid}/${Date.now()}-${
           imageFile.name
         }`;
+        imagePath = filePath;
         imageUrl = await uploadFile(imageFile, filePath);
       }
 
@@ -67,6 +69,7 @@ const CreatePost = ({ onPostCreated }) => {
         authorProfilePic: profileData.profilePicture || null,
         content: content,
         imageUrl: imageUrl,
+        imagePath: imagePath,
         likes: [],
         commentsCount: 0,
       };

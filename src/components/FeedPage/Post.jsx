@@ -1,5 +1,7 @@
 import React from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { deletePost } from "../../services/firestore";
+import { Trash2 } from "lucide-react";
 import { toggleLikePost } from "../../services/firestore.js";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -7,12 +9,13 @@ import { Heart, MessageSquare } from "lucide-react";
 
 import CommentsModal from "../Modals/CommentsModal.jsx";
 
-const Post = ({ post, onPostUpdate }) => {
+const Post = ({ post, onPostUpdate, onPostDelete }) => {
   const postDate = post.createdAt?.toDate();
   const { currentUser } = useAuth();
   const [isCommentModalOpen, setIsCommentModalOpen] = React.useState(false);
 
   const isLiked = post.likes?.includes(currentUser.uid);
+  const isAuthor = currentUser && currentUser.uid === post.authorId;
 
   const handleLike = async () => {
     const newLikes = isLiked
@@ -26,6 +29,24 @@ const Post = ({ post, onPostUpdate }) => {
     } catch (error) {
       console.error("Falha ao curtir:", error);
       onPostUpdate(post);
+    }
+  };
+
+  const handleDelete = async () => {
+    // 2. Adicione uma confirmação para evitar exclusões acidentais
+    if (
+      window.confirm(
+        "Tem certeza que deseja excluir este post? Esta ação não pode ser desfeita."
+      )
+    ) {
+      try {
+        await deletePost(post.id, post.imagePath);
+
+        onPostDelete(post.id); // 3. Avise o Feed para remover o post da tela
+      } catch (error) {
+        console.error("ERRO CAPTURADO no handleDelete do Post.jsx:", error);
+        alert("Erro ao excluir o post. Tente novamente.");
+      }
     }
   };
 
@@ -109,7 +130,7 @@ const Post = ({ post, onPostUpdate }) => {
 
           {/* Botão Comentar */}
           <button
-            onClick={()=>setIsCommentModalOpen(true)}
+            onClick={() => setIsCommentModalOpen(true)}
             className="flex items-center space-x-2 text-gray-500 hover:text-cyan-500 group transition-colors duration-200"
           >
             <div className="p-2 rounded-full group-hover:bg-cyan-100 hover:cursor-pointer">
@@ -120,9 +141,22 @@ const Post = ({ post, onPostUpdate }) => {
             </span>
           </button>
         </div>
+        {isAuthor && (
+          <button
+            onClick={handleDelete}
+            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-100 rounded-full"
+          >
+            <Trash2 size={18} />
+          </button>
+        )}
       </div>
 
-      {isCommentModalOpen && <CommentsModal postId={post.id} onClose={() => setIsCommentModalOpen(false)} />}
+      {isCommentModalOpen && (
+        <CommentsModal
+          postId={post.id}
+          onClose={() => setIsCommentModalOpen(false)}
+        />
+      )}
     </>
   );
 };

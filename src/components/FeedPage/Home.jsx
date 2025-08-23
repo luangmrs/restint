@@ -11,6 +11,7 @@ const Home = () => {
   const [postTrigger, setPostTrigger] = React.useState(0);
   const handlePostCreated = () => setPostTrigger((prev) => prev + 1);
   const handleProfileUpdate = () => setProfileTrigger((prev) => prev + 1);
+  
 
   return (
     <div className="min-h-screen bg-gray-200">

@@ -1,6 +1,7 @@
 import { db } from "./firebaseConfig.js";
 import {
   collection,
+  deleteDoc,
   doc,
   addDoc,
   getDoc,
@@ -17,6 +18,7 @@ import {
   arrayRemove,
   arrayUnion,
 } from "firebase/firestore";
+import { deleteFile } from "./storage.js";
 
 const POSTS_PER_PAGE = 5;
 
@@ -100,16 +102,16 @@ export const getPostsByUser = async (userId) => {
   if (!userId) return [];
   try {
     const postsCollection = collection(db, "posts");
-    
+
     // A query agora filtra onde 'authorId' é igual ao userId fornecido
     const q = query(
-      postsCollection, 
+      postsCollection,
       where("authorId", "==", userId),
       orderBy("createdAt", "desc")
     );
 
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error("Erro ao buscar os posts do usuário:", error);
     throw new Error("Não foi possível carregar os posts.");
@@ -178,4 +180,21 @@ export const addCommentToPost = async (postId, commentData) => {
   await updateDoc(postDocRef, {
     commentsCount: increment(1),
   });
+};
+
+export const deletePost = async (postId, imagePath) => {
+  if (!postId) throw new Error("ID do post não fornecido.");
+  try {
+    // 1. Deleta a imagem do Storage, se houver
+    if (imagePath) {
+      await deleteFile(imagePath);
+    }
+
+    // 2. Deleta o documento do post no Firestore
+    const postDocRef = doc(db, "posts", postId);
+    await deleteDoc(postDocRef);
+  } catch (error) {
+    console.error("Erro ao deletar o post:", error);
+    throw new Error("Não foi possível deletar o post.");
+  }
 };

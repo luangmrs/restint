@@ -51,6 +51,11 @@ const Feed = () => {
       currentPosts.map((p) => (p.id === updatedPost.id ? updatedPost : p))
     );
   };
+  const handlePostDelete = (deletedPostId) => {
+    setPosts((currentPosts) =>
+      currentPosts.filter((p) => p.id !== deletedPostId)
+    );
+  };
 
   // Efeito para a busca inicial
   useEffect(() => {
@@ -95,15 +100,25 @@ const Feed = () => {
   return (
     <div>
       {posts.map((post, index) => {
-        // Se este for o último post da lista, adicionamos a ref a ele
-        if (posts.length === index + 1) {
-          return (
-            <div ref={lastPostElementRef} key={post.id}>
-              <Post post={post} />
-            </div>
-          );
+        // Criamos o componente Post com TODAS as props, para todos os posts
+        const postComponent = (
+          <Post
+            key={post.id}
+            post={post}
+            onPostUpdate={handlePostUpdate}
+            onPostDelete={handlePostDelete}
+          />
+        );
+
+        // Verificamos se é o último post
+        const isLastPost = posts.length === index + 1;
+
+        // Se for o último, envolvemos com o div da "ref". Senão, retornamos apenas o post.
+        // Desta forma, as props são sempre passadas.
+        if (isLastPost) {
+          return <div ref={lastPostElementRef}>{postComponent}</div>;
         } else {
-          return <Post key={post.id} post={post} onPostUpdate={handlePostUpdate} />;
+          return postComponent;
         }
       })}
 
