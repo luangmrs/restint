@@ -1,7 +1,7 @@
 
 ## 📜 Sobre o Projeto
 O **RestInt** é uma **Single Page Application (SPA)** que simula as funcionalidades essenciais de uma rede social baseada em comunidade.  
-O projeto foi desenvolvido como uma demonstração prática de uma arquitetura moderna e escalável, utilizando **React** para o frontend e os serviços *serverless* do **Firebase** para o backend (autenticação, banco de dados e armazenamento de arquivos).
+O projeto foi desenvolvido utilizando **React** para o frontend e os serviços *serverless* do **Firebase** para o backend (autenticação, banco de dados e armazenamento de arquivos).
 
 ---
 
